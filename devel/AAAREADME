@@ -1,0 +1,11 @@
+Development branch: testing, development, or obsolete routines.
+
+routine				type		comment
+-------				----		-------
+cwi_barsep.pro			test		gathers statistics on bar separation
+cwi_grat_caldat.pro		test		gathers grating calibration data
+ecwi_cflat_anal.pro		test		analys continuum flats for charge transfer problems
+ecwi_comp_profs			test		compare slit profile images
+ecwi_proc_std			dev		process and Oke and Gunn std table in AB mags
+ecwi_test_std.pro		test:		for testing std star calibration
+fball_suming.pro		dev		sum photon counting images
