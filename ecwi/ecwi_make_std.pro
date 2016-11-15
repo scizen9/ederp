@@ -274,7 +274,7 @@ pro ecwi_make_std,ecfg,ppar,invsen
 		format='(a,f5.1,1x,a)'
 	;
 	; smooth to this resolution
-	obsspec = gaussfold(w,obsspec,fwhm,lammin=wgoo0,lammax=wgoo1)
+	obsspec = gaussfold(w,obsspec,fwhm)
 	;
 	; resample standard onto our wavelength grid
 	linterp,swl,sflx,w,rsflx
