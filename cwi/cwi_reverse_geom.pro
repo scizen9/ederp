@@ -19,9 +19,9 @@
 pro CWI_REVERSE_GEOM, kgeom, ppar, degree=degree
 
 ; Check structs
-if kcwi_verify_geom(kgeom,/init) ne 0 then return
-if kcwi_verify_ppar(ppar) ne 0 then begin
-	ppar = {kcwi_ppar}
+if ecwi_verify_geom(kgeom,/init) ne 0 then return
+if ecwi_verify_ppar(ppar) ne 0 then begin
+	ppar = {ecwi_ppar}
 endif
 
 ; read in quantities from the geometry.
@@ -53,7 +53,7 @@ endif
   
   outfile = "wavemap"+string(imno,"(i05)")+".fits"
 
-  outfile = kcwi_get_imname(ppar,kgeom.cbarsimgnum,"_wavemap",/reduced);
+  outfile = ecwi_get_imname(ppar,kgeom.cbarsimgnum,"_wavemap",/reduced);
   print,outfile
 
   x = dindgen(nx)

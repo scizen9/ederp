@@ -48,14 +48,27 @@ pro ecwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	endif
 	;
 	; get params
-	ppar = ecwi_read_ppar('./redux/ecwi.ppar')
+	pfile = 'ecwi.ppar'
+	if not file_test(pfile) then begin
+		pfile = 'redux/ecwi.ppar'
+		if not file_test(pfile) then begin
+			print,'Parameter file not found: ',pfile
+			return
+		endif
+	endif
+	ppar = ecwi_read_ppar(pfile)
+	;
+	; get input file
+	ifil = ecwi_get_imname(ppar,imno,'_icubes',/reduced)
+	if file_test(ifil) then begin
+		ecfg = ecwi_read_cfg(ifil)
+	endif else begin
+		print,'Input file not found: ',ifil
+		return
+	endelse
 	;
 	; get image number string
 	imstr = string(imno,format='(i0'+strn(ppar.fdigits)+')')
-	;
-	; get inputs
-	fspec = ppar.froot + imstr + '_icubes.fits'
-	kcfg = ecwi_read_cfgs('./redux',filespec=fspec)
 	;
 	; check keyword overrides
 	if keyword_set(verbose) then $
@@ -67,7 +80,7 @@ pro ecwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	ecwi_print_info,ppar,pre,version
 	;
 	; is this a standard star object observation?
-	if strmatch(strtrim(kcfg.imgtype,2),'object') eq 0 then begin
+	if strmatch(strtrim(ecfg.imgtype,2),'object') eq 0 then begin
 		ecwi_print_info,ppar,pre,'not a std obs',/warning
 	endif
 	;
@@ -78,7 +91,7 @@ pro ecwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	endif
 	;
 	; read in image (already extinction corrected)
-	icub = ecwi_read_image(kcfg.imgnum,ppar,'_icubes',hdr,/calib,status=stat)
+	icub = ecwi_read_image(ecfg.imgnum,ppar,'_icubes',hdr,/calib,status=stat)
 	if stat ne 0 then begin
 		ecwi_print_info,ppar,pre,'could not read input file',/error
 		return
@@ -166,7 +179,7 @@ pro ecwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	deepcolor
 	!p.background=colordex('white')
 	!p.color=colordex('black')
-	skywin = ppar.psfwid/kcfg.xbinsize
+	skywin = ppar.psfwid/ecfg.xbinsize
 	for i=sl0,sl1 do begin
 		skyspec = fltarr(sz[2])
 		for j = 0,sz[2]-1 do begin
@@ -286,7 +299,7 @@ pro ecwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	;
 	; check for effective area curve
 	eafil = ppar.reddir + ppar.froot + $
-		string(kcfg.imgnum,format='(i0'+strn(ppar.fdigits)+')') + $
+		string(ecfg.imgnum,format='(i0'+strn(ppar.fdigits)+')') + $
 		'_ea.fits'
 	if file_test(eafil) then begin
 		rdfits1dspec,eafil,wea,ea,hdr

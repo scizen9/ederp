@@ -109,7 +109,7 @@ else	begin
 	endif
 	fdig = 0
 	for i=0,nf-1 do begin
-		ndig = kcwi_get_digits(flist[i])
+		ndig = ecwi_get_digits(flist[i])
 		if ndig gt fdig then fdig = ndig
 	endfor
 endelse
