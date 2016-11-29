@@ -60,7 +60,9 @@ function ecwi_parse_dates,hdr_dates,verbose=verbose
 		se = float(it)
 		;
 		; convert to julian date
-		jds[i] = julday(mo, dy, yr, hr, mi, se)
+		if yr gt 0 then $
+			jds[i] = julday(mo, dy, yr, hr, mi, se) $
+		else	jds[i] = -1.d0
 	endfor
 	;
 	return,jds

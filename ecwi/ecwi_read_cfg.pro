@@ -95,6 +95,10 @@ function ecwi_read_cfg,obsfname,verbose=verbose
 	   strpos(cfg.imgtype,'bars') ge 0 or $
 	   strpos(cfg.imgtype,'flat') ge 0 then cfg.obstype = 'cal'
    	if strpos(cfg.imgtype,'object') ge 0 then cfg.obstype = 'obj'
+	if cfg.juliandate le 0 then begin
+		cfg.obstype = 'test'
+		cfg.imgtype = 'test'
+	endif
 	cfg.imgnum	= long(stregex(root,'[0-9]+',/extract))
 	cfg.initialized	= 1
 	cfg.timestamp	= double(fi.mtime)	; use file timestamp
