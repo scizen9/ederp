@@ -330,7 +330,7 @@ pro ecwi_stage1,ppfname,linkfname,help=help,select=select, $
 			oscan_pix	= bsec[0,0,1] - bsec[0,0,0]
 			;
 			; do we have enough overscan to get good statistics?
-			if oscan_pix ge ppar.minoscanpix and (0 eq 1) then begin
+			if oscan_pix ge ppar.minoscanpix and ecfg.gain1 eq 2. then begin
 				;
 				; loop over amps
 				for ia = 0, namps-1 do begin
@@ -410,7 +410,7 @@ pro ecwi_stage1,ppfname,linkfname,help=help,select=select, $
 					ecwi_write_image,img,hdr,ofil,ppar
 				endif
 			endif else begin	; no overscan to subtract
-				ecwi_print_info,ppar,pre,'not currently subtracting overscan (12/02/2016)',/warning
+				ecwi_print_info,ppar,pre,'not subtracting overscan for ph-counted imgs',/warning
 				sxaddpar,hdr,'OSCANSUB','F',' overscan subtracted?'
 			endelse
 			;
